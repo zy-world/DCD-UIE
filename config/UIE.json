@@ -1,0 +1,87 @@
+{
+    "name": "pre_UIEB",
+    "phase": "train",
+    "gpu_ids": [
+        0
+    ],
+    "path": {
+        "log": "logs",
+        "tb_logger": "tb_logger",
+        "results": "results",
+        "checkpoint": "checkpoint",
+        "models": "checkpoint",
+        "resume_state": "experiments/UIEB"
+    },
+    "datasets": {
+        "val": {
+            "name": "Water",
+            "mode": "LRHR",
+            "dataroot_HR": "dataset/hr_256",
+            "dataroot_LR": "dataset/sr_16_256",
+            "datatype": "img",
+            "l_resolution": 32,
+            "r_resolution": 256,
+            "data_len": 200
+        }
+    },
+    "model": {
+        "which_model_G": "sr3",
+        "finetune_norm": false,
+        "unet": {
+            "in_channel":  6,
+            "out_channel": 3,
+            "inner_channel": 64,
+            "channel_multiplier": [
+                1,
+                2,
+                4,
+                8,
+                8
+            ],
+            "attn_res": [
+                16
+            ],
+            "res_blocks": 2,
+            "dropout": 0.2
+        },
+        "beta_schedule": {
+            "train": {
+                "schedule": "linear",
+                "n_timestep": 2000,
+                "linear_start": 1e-6,
+                "linear_end": 1e-2
+            },
+            "val": {
+                "schedule": "linear",
+                "n_timestep": 2000,
+                "linear_start": 1e-6,
+                "linear_end": 1e-2
+            }
+        },
+        "diffusion": {
+            "image_size": 256,
+            "channels": 3,
+            "conditional": true
+        },
+        "dynamic_color_guidance_config": {
+        "beta": 0.05,
+        "k": 1
+        }
+    },
+    "train": {
+        "n_iter": 2000000,
+        "val_freq": 1000,
+        "save_checkpoint_freq": 1000,
+        "print_freq": 100,
+        "optimizer": {
+            "type": "adam",
+            "lr": 2e-6
+        },
+        "ema_scheduler": {
+            "step_start_ema": 5000,
+            "update_ema_every": 1,
+            "ema_decay": 0.9999
+        }
+
+    }
+}
