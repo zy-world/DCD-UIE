@@ -4,4 +4,4 @@
 
 #### Once downloaded, place the weights file in the experiments directory.
 
-####You can use the inferred.py script for model inference. Please modify the weight path and input data path in the script according to the actual situation.
+#### You can use the inferred.py script for model inference. Please modify the weight path and input data path in the script according to the actual situation.
